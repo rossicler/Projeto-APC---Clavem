@@ -1,2 +1,238 @@
+#include <graphics.h>//WinBGIM - Novidade
+#include <stdlib.h>
+#include <stdio.h>
+#include <windows.h>//PlaySound - Novidade
+#define RESX 500
+#define RESY 500
+#define MAX 15
 
-int main()
+void clearscreen(void);
+void tabela(void);
+void comentario();
+void login();
+void senha();
+
+struct formulario
+{
+	char comentario[20];
+	char login[20];
+	char senha[30];
+};
+
+int main() 
+{
+	//Se quiser, utilizar threads
+	//música ambiente. Segura nenem!!!
+	//PlaySound("musica.wav", NULL, SND_FILENAME);
+	
+	int x=0,y=0,i=0;
+	struct formulario f[MAX];
+	//criação da janela gráfica----------------------------------
+	initwindow(RESX, RESY, "Projeto Crypt");
+	clearscreen();
+    //-----------------------------------------------------------
+  	//adicionando imagens
+	readimagefile("TITULO PRINCIPAL.jpg",20,20,480,120);
+	readimagefile("crypt.jpg",20,245,245,270);
+	readimagefile("descrypt.jpg",255,245,480,270);
+	
+    //--------------------------------------------------------------------------------------
+    while (!ismouseclick(WM_LBUTTONDOWN))
+    {
+        delay(10); // Five second delay, so there might be a several clicks
+    }
+    
+    //Pegando clique do mouse-------------------------------------//
+    while (ismouseclick(WM_LBUTTONDOWN))
+	{
+		
+		getmouseclick(WM_LBUTTONDOWN, x, y);//pegando o clique do mouse. As coordenadas x e y são armazenadas.		
+		
+		if((x>=20&&x<=245) && (y>=245)&&(y<=270))//o clique foi no botão
+		{
+			//dando a impressão gráfica do clique---------
+			readimagefile("botao2.jpg",20,245,245,270);
+			delay(400);
+			readimagefile("crypt.jpg",20,245,245,270);
+			//------------------------------------------------------------------------
+			clearscreen();
+			readimagefile("TituloIm.jpg",20,20,480,120);
+  		    readimagefile("Imagem 1.jpeg",20,200,130,320);//imagens para a escolha do usuário
+  		    readimagefile("Imagem 2.jpeg",135,200,245,320);
+  		    readimagefile("Imagem 3.jpeg",255,200,360,320);
+  		    readimagefile("Imagem 4.jpeg",365,200,475,320);
+  		    //--------------------------------------------------------------------------------------------
+			while (!ismouseclick(WM_LBUTTONDOWN))
+  			{
+				delay(10);
+   			}
+    		while (ismouseclick(WM_LBUTTONDOWN))
+			{
+			 	getmouseclick(WM_LBUTTONDOWN, x, y);
+  		   		if((x>=20&&x<=130) && (y>=200&&y<=320))
+  		   		{
+					tabela();
+					comentario();
+					login();
+					i++;
+				}
+				if((x>=135&&x<=245) && (y>=200&&y<=320))
+				{
+					tabela();
+					i++;
+				}
+				if((x>=255&&x<=360) && (y>=200&&y<=320))
+				{
+					tabela();
+					i++;
+				}
+				if((x>=365&&x<=475) && (y>=200&&y<=320))
+				{
+					tabela();
+					i++;
+				}
+			}		
+		}
+		if((x>=255&&x<=480) && (y>=245)&&(y<=270))//o clique foi no botão
+		{
+			//dando a impressão gráfica do clique---------
+			readimagefile("botao1.jpg",255,245,480,270);
+			delay(400);
+			readimagefile("descrypt.jpg",255,245,480,270);
+			//------------------------------------------------------------------------
+			clearscreen();
+  		    readimagefile("descrypt2.jpg",20,20,480,120);//imagem texto informativo
+		}
+		
+	}	
+	
+    
+    system("PAUSE");
+	return 0;
+}
+
+void clearscreen(void)
+{
+	setcolor (0); // cor da linha: 0 igual a preto
+	setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 	bar(0, 0, RESX, RESY); // fundo branco
+  	rectangle(5,5,RESX-5,RESY-5);//cria borba na tela
+}
+
+void tabela(void)
+{
+	setcolor (0);	
+	setfillstyle (1, 15);
+	bar(0, 0, RESX, RESY);
+	rectangle(5,5,RESX-5,RESY-5);
+	//------------------------------------------------------
+	settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+	setbkcolor(15);
+	setcolor(0);
+	//-------------------------------------------------------
+	for(int k=0;k<3;k++)
+   	{
+   		rectangle(150,195+(k*50),350,220+(k*50));
+   	}
+   	bgiout <<"Comentario";
+   	outstreamxy(210,180);
+   	bgiout <<"Login";
+   	outstreamxy(230,230);
+   	bgiout <<"Senha";
+   	outstreamxy(227,280);
+	
+	
+}
+
+void comentario()
+{
+	int i=0;
+	int n = 0;
+	struct formulario f[MAX];
+	while(f[n].comentario[i]!=13 && i<20)//digitar "ENTER" para sair...
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		f[n].comentario[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if (f[n].comentario[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 200, 170, 219); //preenche o local onde a letra foi escrita de branco
+			}
+			else
+			{
+				bar(150+((i-1)*15), 200, 170+((i-1)*15), 219); //preenche o local onde a letra foi escrita de branco
+				i--;
+			}
+	
+		}
+		else
+		{
+			bgiout <<f[n].comentario[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,196);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),196);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}
+	n++;
+}
+
+void login()
+{
+	int i=0;
+	int n = 0;
+	struct formulario f[MAX];
+	while(f[n].login[i]!=13 && i<20)//digitar "ENTER" para sair...
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		f[n].login[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if (f[n].login[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 250, 170, 269); //preenche o local onde a letra foi escrita de branco
+			}
+			else
+			{
+				bar(150+((i-1)*15), 250, 170+((i-1)*15), 269); //preenche o local onde a letra foi escrita de branco
+				i--;
+			}
+	
+		}
+		else
+		{
+			bgiout <<f[n].login[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,246);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),246);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}
+	n++;
+}
+
+
+
