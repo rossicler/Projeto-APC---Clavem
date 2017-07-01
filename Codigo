@@ -8,16 +8,9 @@
 
 void clearscreen(void);
 void tabela(void);
-void comentario();
-void login();
-void senha();
-
-struct formulario
-{
-	char comentario[20];
-	char login[20];
-	char senha[30];
-};
+void comentario(char *coment);
+void login(char *login);
+void senha(char *senha);
 
 int main() 
 {
@@ -26,7 +19,9 @@ int main()
 	//PlaySound("musica.wav", NULL, SND_FILENAME);
 	
 	int x=0,y=0,i=0;
-	struct formulario f[MAX];
+	char comentarioA[MAX][20];
+	char loginA[MAX][20];
+	char senhaA[MAX][30];
 	//criação da janela gráfica----------------------------------
 	initwindow(RESX, RESY, "Projeto Crypt");
 	clearscreen();
@@ -71,23 +66,30 @@ int main()
 			 	getmouseclick(WM_LBUTTONDOWN, x, y);
   		   		if((x>=20&&x<=130) && (y>=200&&y<=320))
   		   		{
+					i = 0;
 					tabela();
-					comentario();
-					login();
+					readimagefile("adicionar.jpg",340,420,380,460);
+					readimagefile("prox.jpg",390,420,430,460);
+					comentario(comentarioA[i]);
+					login(loginA[i]);
+					senha(senhaA[i]);
 					i++;
 				}
 				if((x>=135&&x<=245) && (y>=200&&y<=320))
 				{
+					i = 0;
 					tabela();
 					i++;
 				}
 				if((x>=255&&x<=360) && (y>=200&&y<=320))
 				{
+					i = 0;
 					tabela();
 					i++;
 				}
 				if((x>=365&&x<=475) && (y>=200&&y<=320))
 				{
+					i = 0;
 					tabela();
 					i++;
 				}
@@ -144,19 +146,21 @@ void tabela(void)
 	
 }
 
-void comentario()
+void comentario(char *coment)
 {
 	int i=0;
-	int n = 0;
-	struct formulario f[MAX];
-	while(f[n].comentario[i]!=13 && i<20)//digitar "ENTER" para sair...
+	//struct formulario f;
+	
+	do
 	{
 		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
 		setbkcolor(15);
 		setcolor(0);
-		f[n].comentario[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		coment[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if (f[n].comentario[i] == 8)
+		if(coment[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+			break;
+		if (coment[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
 			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
@@ -174,7 +178,7 @@ void comentario()
 		}
 		else
 		{
-			bgiout <<f[n].comentario[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			bgiout <<coment[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
 			if(i==1)//para a primeira caixinha
 			{
 				outstreamxy(i*170,196);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
@@ -185,23 +189,23 @@ void comentario()
 			}
 			i++; //variável utilizada apenas para deslocar o texto
 		}	
-	}
-	n++;
+	}while(coment[i]!=13 && i<15);//digitar "ENTER" para sair...
 }
 
-void login()
+void login(char *login)
 {
 	int i=0;
-	int n = 0;
-	struct formulario f[MAX];
-	while(f[n].login[i]!=13 && i<20)//digitar "ENTER" para sair...
+	//struct formulario f;
+	do
 	{
 		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
 		setbkcolor(15);
 		setcolor(0);
-		f[n].login[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		login[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if (f[n].login[i] == 8)
+		if(login[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+			break;
+		if (login[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
 			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
@@ -219,7 +223,7 @@ void login()
 		}
 		else
 		{
-			bgiout <<f[n].login[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			bgiout <<login[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
 			if(i==1)//para a primeira caixinha
 			{
 				outstreamxy(i*170,246);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
@@ -230,9 +234,52 @@ void login()
 			}
 			i++; //variável utilizada apenas para deslocar o texto
 		}	
-	}
-	n++;
+	}while(login[i]!=13 && i<15);//digitar "ENTER" para sair...
 }
 
+void senha(char *senha)
+{
+	int i=0;
+	//struct formulario f;
+	do
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		senha[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if(senha[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+			break;
+		if (senha[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 250, 170, 269); //preenche o local onde a letra foi escrita de branco
+			}
+			else
+			{
+				bar(150+((i-1)*15), 300, 170+((i-1)*15), 319); //preenche o local onde a letra foi escrita de branco
+				i--;
+			}
+	
+		}
+		else
+		{
+			bgiout <<senha[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,296);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),296);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}while(senha[i]!=13 && i<15);//digitar "ENTER" para sair...
+}
 
 
