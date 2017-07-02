@@ -11,6 +11,8 @@ void tabela(void);
 void comentario(char *coment);
 void login(char *login);
 void senha(char *senha);
+void senhaMestre(char *senha);
+void sucesso(void);
 
 int main() 
 {
@@ -18,10 +20,12 @@ int main()
 	//música ambiente. Segura nenem!!!
 	//PlaySound("musica.wav", NULL, SND_FILENAME);
 	
-	int x=0,y=0,i=0;
+	int x=0,y=0,i=0,opcao;
+	char escolha;
 	char comentarioA[MAX][20];
 	char loginA[MAX][20];
 	char senhaA[MAX][30];
+	char senhaM[30];
 	//criação da janela gráfica----------------------------------
 	initwindow(RESX, RESY, "Projeto Crypt");
 	clearscreen();
@@ -66,32 +70,67 @@ int main()
 			 	getmouseclick(WM_LBUTTONDOWN, x, y);
   		   		if((x>=20&&x<=130) && (y>=200&&y<=320))
   		   		{
-					i = 0;
-					tabela();
-					readimagefile("adicionar.jpg",340,420,380,460);
-					readimagefile("prox.jpg",390,420,430,460);
-					comentario(comentarioA[i]);
-					login(loginA[i]);
-					senha(senhaA[i]);
-					i++;
+					i = 0;//inicializando a variavel ''contador''
+					do
+					{
+						tabela();
+						comentario(comentarioA[i]);//armazenando as strings nas variaveis char de comentario,login e senha a partir da função criada.
+						login(loginA[i]);
+						senha(senhaA[i]);
+						escolha = getch();
+						i++;//variavel que armazena a quantidade de dados fornecido pelo usuario
+					}while(escolha!=27);//lógica para inserção de dados até que se aperte o ESC
+					
+					senhaMestre(senhaM);//função para inserção da senha mestre	
+					sucesso();//função que chama a janela final
 				}
 				if((x>=135&&x<=245) && (y>=200&&y<=320))
 				{
 					i = 0;
-					tabela();
-					i++;
+					do
+					{
+						tabela();
+						comentario(comentarioA[i]);
+						login(loginA[i]);
+						senha(senhaA[i]);
+						escolha = getch();
+						i++;
+					}while(escolha!=27);
+					
+					senhaMestre(senhaM);
+					sucesso();
 				}
 				if((x>=255&&x<=360) && (y>=200&&y<=320))
 				{
 					i = 0;
-					tabela();
-					i++;
+					do
+					{
+						tabela();
+						comentario(comentarioA[i]);
+						login(loginA[i]);
+						senha(senhaA[i]);
+						escolha = getch();
+						i++;
+					}while(escolha!=27);
+					
+					senhaMestre(senhaM);
+					sucesso();
 				}
 				if((x>=365&&x<=475) && (y>=200&&y<=320))
 				{
 					i = 0;
-					tabela();
-					i++;
+					do
+					{
+						tabela();
+						comentario(comentarioA[i]);
+						login(loginA[i]);
+						senha(senhaA[i]);
+						escolha = getch();
+						i++;
+					}while(escolha!=27);
+					
+					senhaMestre(senhaM);
+					sucesso();
 				}
 			}		
 		}
@@ -280,6 +319,76 @@ void senha(char *senha)
 			i++; //variável utilizada apenas para deslocar o texto
 		}	
 	}while(senha[i]!=13 && i<15);//digitar "ENTER" para sair...
+}
+
+void senhaMestre(char *senha)
+{	
+	int i=0;
+	
+	setcolor (0);	
+	setfillstyle (1, 15);
+	bar(0, 0, RESX, RESY);
+	rectangle(5,5,RESX-5,RESY-5);
+	
+	rectangle(150,275,350,300);
+	bgiout<<"Senha Mestre";
+	outstreamxy(200,250);
+	
+	do
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		senha[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if(senha[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+			break;
+		if (senha[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 280, 170, 299); //preenche o local onde a letra foi escrita de branco
+			}
+			else
+			{
+				bar(150+((i-1)*15), 280, 170+((i-1)*15), 299); //preenche o local onde a letra foi escrita de branco
+				i--;
+			}
+	
+		}
+		else
+		{
+			bgiout <<senha[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,276);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),276);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}while(senha[i]!=13 && i<15);//digitar "ENTER" para sair...	
+}
+
+void sucesso(void)//função que mostra uma nova janela para informar o sucesso da operação
+{
+	initwindow(450,100, "SUCESSO!!");
+	setcolor (0); // cor da linha: 0 igual a preto
+	setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 	bar(0, 0, 450, 100); // fundo branco
+  	rectangle(5,5,445,95);//cria borba na tela
+	settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 3);
+	setbkcolor(15);
+	setcolor(0);
+	bgiout<<"PARABENS!!!";
+	outstreamxy(30,30);
+	bgiout<<"CRIPTOGRAFIA FEITA COM SUCESSO.";
+	outstreamxy(30,50);	
 }
 
 
