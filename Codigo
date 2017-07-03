@@ -194,6 +194,11 @@ void tabela(void)
    	outstreamxy(230,230);
    	bgiout <<"Senha";
    	outstreamxy(227,280);
+   	
+   	bgiout<<"Digite ESC para ir a proxima etapa.";
+   	outstreamxy(30,420);
+   	bgiout<<"OBS: Digite apos a confirmacao de todos os dados.";
+   	outstreamxy(30,450);
 	
 	
 }
