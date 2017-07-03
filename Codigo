@@ -13,6 +13,7 @@ void login(char *login);
 void senha(char *senha);
 void senhaMestre(char *senha);
 void sucesso(void);
+void tecladoD(char *senha, char *nome);
 
 int main() 
 {
@@ -20,12 +21,15 @@ int main()
 	//música ambiente. Segura nenem!!!
 	//PlaySound("musica.wav", NULL, SND_FILENAME);
 	
-	int x=0,y=0,i=0,opcao;
+	int x=0,y=0,i=0,k;
 	char escolha;
 	char comentarioA[MAX][20];
 	char loginA[MAX][20];
 	char senhaA[MAX][30];
 	char senhaM[30];
+	char senhaMF[30];
+	char nomeIMG[30];
+	int imageE;
 	//criação da janela gráfica----------------------------------
 	initwindow(RESX, RESY, "Projeto Crypt");
 	clearscreen();
@@ -70,6 +74,7 @@ int main()
 			 	getmouseclick(WM_LBUTTONDOWN, x, y);
   		   		if((x>=20&&x<=130) && (y>=200&&y<=320))
   		   		{
+					imageE = 1;
 					i = 0;//inicializando a variavel ''contador''
 					do
 					{
@@ -86,6 +91,7 @@ int main()
 				}
 				if((x>=135&&x<=245) && (y>=200&&y<=320))
 				{
+					imageE = 2;
 					i = 0;
 					do
 					{
@@ -102,6 +108,7 @@ int main()
 				}
 				if((x>=255&&x<=360) && (y>=200&&y<=320))
 				{
+					imageE = 3;
 					i = 0;
 					do
 					{
@@ -118,6 +125,7 @@ int main()
 				}
 				if((x>=365&&x<=475) && (y>=200&&y<=320))
 				{
+					imageE = 4;
 					i = 0;
 					do
 					{
@@ -143,10 +151,12 @@ int main()
 			//------------------------------------------------------------------------
 			clearscreen();
   		    readimagefile("descrypt2.jpg",20,20,480,120);//imagem texto informativo
+  		    
+  		    tecladoD(senhaMF,nomeIMG);
+  		    
 		}
 		
-	}	
-	
+	}
     
     system("PAUSE");
 	return 0;
@@ -188,7 +198,6 @@ void tabela(void)
 void comentario(char *coment)
 {
 	int i=0;
-	//struct formulario f;
 	
 	do
 	{
@@ -197,8 +206,13 @@ void comentario(char *coment)
 		setcolor(0);
 		coment[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if(coment[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+		
+		if(coment[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(coment[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				coment[i] = '\0';
 			break;
+		}
 		if (coment[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
@@ -207,13 +221,13 @@ void comentario(char *coment)
 			if(i==1)
 			{
 				bar(151, 200, 170, 219); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 			else
 			{
 				bar(150+((i-1)*15), 200, 170+((i-1)*15), 219); //preenche o local onde a letra foi escrita de branco
-				i--;
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
-	
 		}
 		else
 		{
@@ -234,7 +248,6 @@ void comentario(char *coment)
 void login(char *login)
 {
 	int i=0;
-	//struct formulario f;
 	do
 	{
 		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
@@ -242,8 +255,12 @@ void login(char *login)
 		setcolor(0);
 		login[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if(login[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+		if(login[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(login[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				login[i] = '\0';
 			break;
+		}
 		if (login[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
@@ -252,11 +269,12 @@ void login(char *login)
 			if(i==1)
 			{
 				bar(151, 250, 170, 269); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 			else
 			{
 				bar(150+((i-1)*15), 250, 170+((i-1)*15), 269); //preenche o local onde a letra foi escrita de branco
-				i--;
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 	
 		}
@@ -279,7 +297,6 @@ void login(char *login)
 void senha(char *senha)
 {
 	int i=0;
-	//struct formulario f;
 	do
 	{
 		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
@@ -287,8 +304,12 @@ void senha(char *senha)
 		setcolor(0);
 		senha[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if(senha[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+		if(senha[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(senha[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				senha[i] = '\0';
 			break;
+		}
 		if (senha[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
@@ -296,12 +317,13 @@ void senha(char *senha)
  			
 			if(i==1)
 			{
-				bar(151, 250, 170, 269); //preenche o local onde a letra foi escrita de branco
+				bar(151, 300, 170, 319); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 			else
 			{
 				bar(150+((i-1)*15), 300, 170+((i-1)*15), 319); //preenche o local onde a letra foi escrita de branco
-				i--;
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 	
 		}
@@ -341,8 +363,12 @@ void senhaMestre(char *senha)
 		setcolor(0);
 		senha[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
 		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
-		if(senha[i] == 13 || i == 16) //interromper a função, caso digite enter ou numero de letras seja igual a 16
+		if(senha[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(senha[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				senha[i] = '\0';
 			break;
+		}
 		if (senha[i] == 8)
 		{
 			setcolor (0); // cor da linha: 0 igual a preto
@@ -351,11 +377,12 @@ void senhaMestre(char *senha)
 			if(i==1)
 			{
 				bar(151, 280, 170, 299); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 			else
 			{
 				bar(150+((i-1)*15), 280, 170+((i-1)*15), 299); //preenche o local onde a letra foi escrita de branco
-				i--;
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
 			}
 	
 		}
@@ -391,4 +418,112 @@ void sucesso(void)//função que mostra uma nova janela para informar o sucesso 
 	outstreamxy(30,50);	
 }
 
-
+void tecladoD(char *senha, char *nome)
+{
+	settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+	setbkcolor(15);
+	setcolor(0);
+	int i=0,k;
+	for(k=1;k<3;k++)
+	{
+		rectangle(150,195+(k*50),350,220+(k*50));
+	}
+	
+	bgiout<<"Senha Mestre";
+	outstreamxy(200,223);
+	bgiout<<"Nome da imagem";
+	outstreamxy(190,273);
+	bgiout<<"O nome da imagem deve possuir a extencao, ex: .bmp";
+	outstreamxy(50,470);
+	
+	do
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		senha[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if(senha[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(senha[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				senha[i] = '\0';
+			break;
+		}
+		if (senha[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 250, 170, 269); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
+			}
+			else
+			{
+				bar(150+((i-1)*15),250, 170+((i-1)*15), 269); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
+			}
+	
+		}
+		else
+		{
+			bgiout <<senha[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,246);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),246);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}while(senha[i]!=13 && i<15);//digitar "ENTER" para sair...	
+	
+	i = 0; //zerando variavel
+	do
+	{
+		settextstyle(SANS_SERIF_FONT, HORIZ_DIR, 1);
+		setbkcolor(15);
+		setcolor(0);
+		nome[i] = getch();//aqui a letra digitada é lida uma a uma sem necessidade de apertar o enter
+		//aqui funciona toda a lógica do backspace. Com isso podemos apagar o que foi digitado
+		if(nome[i] == 13 || i == 14) //interromper a função, caso digite enter ou numero de letras seja igual a 14
+		{
+			if(nome[i] == 13)//muda o valor de enter para \0, pois nao queremos armazenar o valor do enter
+				nome[i] = '\0';
+			break;
+		}
+		if (nome[i] == 8)
+		{
+			setcolor (0); // cor da linha: 0 igual a preto
+			setfillstyle (1, 15);//(forma de preenchimento, cor do preenchimento)  
+ 			
+			if(i==1)
+			{
+				bar(151, 300, 170, 319); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
+			}
+			else
+			{
+				bar(150+((i-1)*15), 300, 170+((i-1)*15), 319); //preenche o local onde a letra foi escrita de branco
+				i--;//subtraindo 1 de 'i', pois é necessario para que salve as letras corretamente
+			}
+	
+		}
+		else
+		{
+			bgiout <<nome[i];//função de saída na tela gráfica. Precisará ainda da "outstreamxy"
+			if(i==1)//para a primeira caixinha
+			{
+				outstreamxy(i*170,296);//impriminto letras delocadas a cada passo. Para a primeira caixinha é diferente.
+			}
+			else//para todas as outras caixinhas
+			{
+				outstreamxy(170+((i-1)*15),296);//cálculo maluco para acertaras letras na caixinha
+			}
+			i++; //variável utilizada apenas para deslocar o texto
+		}	
+	}while(nome[i]!=13 && i<15);//digitar "ENTER" para sair...	
+}
